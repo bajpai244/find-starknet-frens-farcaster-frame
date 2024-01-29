@@ -1,30 +1,32 @@
 const express = require('express');
-const { generateSHA256Hash } = require('./utils');
+const { getProfileLists } = require('./utils');
+const { sync } = require('./sync');
 const app = express();
 
 const port = 3000;
 
-const base_url = 'https://3d9c-2406-7400-63-5992-00-100.ngrok-free.app';
-const profileAbdel = 'https://warpcast.com/abdel'
-const profile_url = `${base_url}/data/${generateSHA256Hash(profileAbdel)}.png`;
-const post_url = '${base_url}/callback';
+sync();
+let profileList = [];
 
 // Serve static files from the 'data' directory
 app.use('/data', express.static('data'));
 
-app.get('/', (req, res) => {
-    res.send(`
-  <html>
-  <head>
-  <meta property="fc:frame" content="vNext"/>
-  <meta property="fc:frame:image" content="${profile_url}"/>
-  <meta property="fc:frame:button:1" content="Find Next Fren :)"/>
-  <meta property="fc:frame:post_url" content="${post_url}"/>
-  </head>
-  <body>
-  </body>
-  </html>
-  `);
+// The request should download all the images to the 'data' directory
+// NOTE: should be called periodically from a cron job
+app.post('/sync', (req, res) => {
+    sync();
+    profileList = getProfileLists();
+    res.send('OK');
+});
+
+// The request should return the URL of the next profile to be displayed
+app.get('/next_profile', (req, res) => {
+    if (profileList.length === 0) {
+        profileList = getProfileLists();
+    }
+
+    let profile_url = profileList.pop();
+    res.send(profile_url);
 });
 
 app.listen(port, () => {

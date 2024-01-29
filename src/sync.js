@@ -1,11 +1,11 @@
 const fs = require('fs');
 const puppeteer = require('puppeteer');
 const dotenv = require('dotenv');
-const {generateSHA256Hash} = require('./utils');
+const { generateSHA256Hash, sleep } = require('./utils');
 
 dotenv.config();
 
-const main = async () => {
+const sync = async () => {
     const browser = await puppeteer.launch({
         headless: true, defaultViewport: {
             width: 635,
@@ -17,32 +17,25 @@ const main = async () => {
     const frenList = await fetchFrenList(browser);
     fs.writeFileSync('./data/frenList.json', JSON.stringify(frenList));
 
-    for (let i = 0; i < frenList.length; i++) {
-        const fren = frenList[i];
+    await Promise.all(frenList.map((fren) => {
         let frenFarCasterProfileUrl = fren.frenFarCasterProfileUrl;
-        const page = await browser.newPage();
-        await page.goto(frenFarCasterProfileUrl, { waitUntil: 'networkidle2' });
-        await sleep(5000);
-
-        await page.screenshot({ path: `./data/${generateSHA256Hash(frenFarCasterProfileUrl)}.png`, clip: clipRegion });
-        await page.close();
-    }
-
+        return takeScreenShot(browser, frenFarCasterProfileUrl);
+    }));
 }
 
+const takeScreenShot = async (browser, frenFarCasterProfileUrl) => {
+    const clipRegion = {
+        x: 0,    // The x-coordinate of the top-left corner of the clip area
+        y: 0,    // The y-coordinate of the top-left corner of the clip area
+        width: 635,  // The width of the clip area
+        height: 200  // The height of the clip area
+    };
+    const page = await browser.newPage();
+    await page.goto(frenFarCasterProfileUrl, { waitUntil: 'networkidle2' });
+    await sleep(5000);
 
-
-// Example usage:
-const clipRegion = {
-    x: 0,    // The x-coordinate of the top-left corner of the clip area
-    y: 0,    // The y-coordinate of the top-left corner of the clip area
-    width: 635,  // The width of the clip area
-    height: 200  // The height of the clip area
-};
-
-
-const sleep = async (milliseconds) => {
-    return new Promise(resolve => setTimeout(resolve, milliseconds))
+    await page.screenshot({ path: `./data/${generateSHA256Hash(frenFarCasterProfileUrl)}.png`, clip: clipRegion });
+    await page.close();
 }
 
 const fetchFrenList = async (browser) => {
@@ -71,4 +64,6 @@ const fetchFrenList = async (browser) => {
     return result;
 }
 
-main();
+module.exports = {
+    sync
+}
