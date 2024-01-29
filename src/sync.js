@@ -6,13 +6,7 @@ const { generateSHA256Hash, sleep } = require('./utils');
 dotenv.config();
 
 const sync = async () => {
-    const browser = await puppeteer.launch({
-        headless: true, defaultViewport: {
-            width: 635,
-            height: 933,
-            isLandscape: true
-        }
-    });
+    const browser = await getBrowser();
 
     const frenList = await fetchFrenList(browser);
     fs.writeFileSync('./data/frenList.json', JSON.stringify(frenList));
@@ -21,6 +15,25 @@ const sync = async () => {
         let frenFarCasterProfileUrl = fren.frenFarCasterProfileUrl;
         return takeScreenShot(browser, frenFarCasterProfileUrl);
     }));
+}
+
+const getBrowser = async () => {
+    const options = process.env.PROD == "true" ? {
+        executablePath: process.env.CHROMIUM_PATH,
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    } : {
+    }
+
+    const browser = await puppeteer.launch({
+        ...options,
+        headless: true,
+        defaultViewport: {
+            width: 635,
+            height: 933,
+            isLandscape: true
+        }
+    });
+    return browser;
 }
 
 const takeScreenShot = async (browser, frenFarCasterProfileUrl) => {
