@@ -11,10 +11,17 @@ const sync = async () => {
     const frenList = await fetchFrenList(browser);
     fs.writeFileSync('./data/frenList.json', JSON.stringify(frenList));
 
-    await Promise.all(frenList.map((fren) => {
+    for (let i = 0; i < frenList.length; i++) {
+        let fren = frenList[i];
         let frenFarCasterProfileUrl = fren.frenFarCasterProfileUrl;
-        return takeScreenShot(browser, frenFarCasterProfileUrl);
-    }));
+        await takeScreenShot(browser, frenFarCasterProfileUrl);
+    }
+
+    // NOTE: this is not working on linux, but this is more efficient
+    // await Promise.all(frenList.map((fren) => {
+    //     let frenFarCasterProfileUrl = fren.frenFarCasterProfileUrl;
+    //     return takeScreenShot(browser, frenFarCasterProfileUrl);
+    // }));
 }
 
 const getBrowser = async () => {
