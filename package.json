@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "install-chrome": "npx puppeteer browsers install chrome",
     "serve": "node src/server.js",
+    "build": "npm run install-chrome && npm run serve",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
