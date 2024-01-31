@@ -17,6 +17,15 @@ const port = 3000;
 sync();
 let profileList = [];
 
+// Middleware function to log requests
+const loggerMiddleware = (req, res, next) => {
+    console.log(`${new Date().toISOString()} - ${req.method} request to ${req.url}`);
+    next(); // Move on to the next middleware or route handler
+};
+
+// Apply the middleware globally
+app.use(loggerMiddleware);
+
 // Serve static files from the 'data' directory
 app.use('/frame', express.static('public'));
 
