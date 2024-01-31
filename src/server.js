@@ -2,14 +2,17 @@ const express = require('express');
 const https = require('https');
 const path = require('path');
 const fs = require('fs');
+const cors = require('cors');
 
 const { getProfileLists } = require('./utils');
 const { sync } = require('./sync');
 
 const app = express();
 
-const port = 3000;
+// Use CORS for all routes
+app.use(cors());
 
+const port = 3000;
 
 sync();
 let profileList = [];
