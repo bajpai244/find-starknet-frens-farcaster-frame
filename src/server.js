@@ -32,13 +32,39 @@ app.post('/sync', (req, res) => {
 });
 
 // The request should return the URL of the next profile to be displayed
-app.get('/next_profile', (req, res) => {
+app.post('/next_profile', (req, res) => {
     if (profileList.length === 0) {
         profileList = getProfileLists();
     }
 
     let profile_url = profileList.pop();
-    res.send(profile_url);
+
+    let result = `
+    <html>
+  <head>
+    <title>Find Starknet Friends :)</title>
+    <meta property="og:title" content="Find Starknet Frens" />
+    <meta
+      property="og:image"
+      content="${profileList}"
+    />
+    <meta property="fc:frame" content="vNext" />
+    <meta
+      property="fc:frame:image"
+      content="${profileList}"
+    />
+    <meta property="fc:frame:button:1" content="Find Next Fren :)" />
+    <meta
+      property="fc:frame:post_url"
+      content="https:://kakachain.xyz:3000/next_profile"
+    />
+  </head>
+  <body>
+    <h1>Starknet follow fellow builders</h1>
+  </body>
+</html>`;
+
+    res.send(result);
 });
 
 if (process.env.PROD == "true") {
