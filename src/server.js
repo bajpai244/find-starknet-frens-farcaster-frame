@@ -4,7 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const cors = require('cors');
 
-const { getProfileLists, profileUrlToPath } = require('./utils');
+const { getProfileLists, generateSHA256Hash } = require('./utils');
 const { sync } = require('./sync');
 
 const app = express();
@@ -46,7 +46,7 @@ app.post('/next_profile', (req, res) => {
         profileList = getProfileLists();
     }
 
-    let profile_url = profileUrlToPath(profileList.pop());
+    let profile_url = `https://kakachain.xyz/data/${generateSHA256Hash(profileList.pop())}.png`
 
     let result = `
     <html>
@@ -61,9 +61,6 @@ app.post('/next_profile', (req, res) => {
     <meta
       property="fc:frame:image"
       content="${profile_url}"
-    />
-    <meta property="fc:frame:button:1" content="Find Next Fren :)" />
-    <meta
       property="fc:frame:post_url"
       content="https:://kakachain.xyz:3000/next_profile"
     />
