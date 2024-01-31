@@ -45,7 +45,7 @@ if (process.env.PROD == "true") {
     // Create an HTTPS server
     const httpsServer = https.createServer(credentials, app);
 
-    httpsServer.listen(PORT, () => {
+    httpsServer.listen(port, () => {
         console.log(`HTTPS Server running on port ${PORT}`);
     });
 } else {
