@@ -1,9 +1,15 @@
 const express = require('express');
+const https = require('https');
+const path = require('path');
+const fs = require('fs');
+
 const { getProfileLists } = require('./utils');
 const { sync } = require('./sync');
+
 const app = express();
 
 const port = 3000;
+
 
 sync();
 let profileList = [];
@@ -29,6 +35,21 @@ app.get('/next_profile', (req, res) => {
     res.send(profile_url);
 });
 
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
-});
+if (process.env.PROD == "true") {
+    // Read the certificate and private key
+    const privateKey = fs.readFileSync(path.join("/etc/letsencrypt/live/www.kakachain.xyz", 'privkey.key'), 'utf8');
+    const certificate = fs.readFileSync(path.join("etc/letsencrypt/live/www.kakachain.xyz", 'cert.pem'), 'utf8');
+
+    const credentials = { key: privateKey, cert: certificate };
+
+    // Create an HTTPS server
+    const httpsServer = https.createServer(credentials, app);
+
+    httpsServer.listen(PORT, () => {
+        console.log(`HTTPS Server running on port ${PORT}`);
+    });
+} else {
+    app.listen(port, () => {
+        console.log(`Example app listening at http://localhost:${port}`);
+    });
+}
