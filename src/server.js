@@ -18,7 +18,7 @@ sync();
 let profileList = [];
 
 // Serve static files from the 'data' directory
-app.use('/public', express.static('public'));
+app.use('/frame', express.static('public'));
 
 // Serve static files from the 'data' directory
 app.use('/data', express.static('data'));
