@@ -17,11 +17,6 @@ const sync = async () => {
         await takeScreenShot(browser, frenFarCasterProfileUrl);
     }
 
-    // NOTE: this is not working on linux, but this is more efficient
-    // await Promise.all(frenList.map((fren) => {
-    //     let frenFarCasterProfileUrl = fren.frenFarCasterProfileUrl;
-    //     return takeScreenShot(browser, frenFarCasterProfileUrl);
-    // }));
 }
 
 const getBrowser = async () => {
