@@ -64,6 +64,11 @@ app.post('/next_profile', (req, res) => {
       property="fc:frame:post_url"
       content="https:://kakachain.xyz:3000/next_profile"
     />
+    <meta property="fc:frame:button:1" content="Find Next Fren :)" />
+    <meta
+      property="fc:frame:post_url"
+      content="https://kakachain.xyz:3000/next_profile"
+    />
   </head>
   <body>
     <h1>Starknet follow fellow builders</h1>
