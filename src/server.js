@@ -15,6 +15,9 @@ sync();
 let profileList = [];
 
 // Serve static files from the 'data' directory
+app.use('public', express.static('public'));
+
+// Serve static files from the 'data' directory
 app.use('/data', express.static('data'));
 
 // The request should download all the images to the 'data' directory
