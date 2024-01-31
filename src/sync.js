@@ -35,8 +35,8 @@ const getBrowser = async () => {
         ...options,
         headless: true,
         defaultViewport: {
-            width: 500,
-            height: 933,
+            width: 542,
+            height: 284,
             isLandscape: true
         }
     });
@@ -47,8 +47,8 @@ const takeScreenShot = async (browser, frenFarCasterProfileUrl) => {
     const clipRegion = {
         x: 0,    // The x-coordinate of the top-left corner of the clip area
         y: 0,    // The y-coordinate of the top-left corner of the clip area
-        width: 500,  // The width of the clip area
-        height: 220  // The height of the clip area
+        width: 542,  // The width of the clip area
+        height: 284  // The height of the clip area
     };
     const page = await browser.newPage();
     await page.goto(frenFarCasterProfileUrl, { waitUntil: 'networkidle2' });
