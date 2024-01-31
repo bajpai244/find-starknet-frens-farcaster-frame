@@ -19,8 +19,13 @@ const getProfileLists =  () => {
     });
 };
 
+const profileUrlToPath = (profileUrl) => {
+    return `./data/${generateSHA256Hash(profileUrl)}.png`;
+}
+
 module.exports = {
     generateSHA256Hash,
     sleep,
-    getProfileLists
+    getProfileLists,
+    profileUrlToPath
 }

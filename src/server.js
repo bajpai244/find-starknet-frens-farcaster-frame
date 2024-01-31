@@ -4,7 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const cors = require('cors');
 
-const { getProfileLists } = require('./utils');
+const { getProfileLists, profileUrlToPath } = require('./utils');
 const { sync } = require('./sync');
 
 const app = express();
@@ -46,7 +46,7 @@ app.post('/next_profile', (req, res) => {
         profileList = getProfileLists();
     }
 
-    let profile_url = profileList.pop();
+    let profile_url = profileUrlToPath(profileList.pop());
 
     let result = `
     <html>
@@ -82,7 +82,7 @@ if (process.env.PROD == "true") {
 
     // Read the certificate and private key
     const privateKey = fs.readFileSync(path.join(certDir, 'privkey.pem'), 'utf8');
-    const certificate = fs.readFileSync(path.join(certDir, 'cert.pem'), 'utf8');
+    const certificate = fs.readFileSync(path.join(certDir, 'fullchain.pem'), 'utf8');
 
     const credentials = { key: privateKey, cert: certificate };
 
