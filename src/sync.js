@@ -48,7 +48,7 @@ const takeScreenShot = async (browser, frenFarCasterProfileUrl) => {
         x: 0,    // The x-coordinate of the top-left corner of the clip area
         y: 0,    // The y-coordinate of the top-left corner of the clip area
         width: 635,  // The width of the clip area
-        height: 200  // The height of the clip area
+        height: 210  // The height of the clip area
     };
     const page = await browser.newPage();
     await page.goto(frenFarCasterProfileUrl, { waitUntil: 'networkidle2' });
