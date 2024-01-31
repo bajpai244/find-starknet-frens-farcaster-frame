@@ -46,12 +46,12 @@ app.post('/next_profile', (req, res) => {
     <meta property="og:title" content="Find Starknet Frens" />
     <meta
       property="og:image"
-      content="${profileList}"
+      content="${profile_url}"
     />
     <meta property="fc:frame" content="vNext" />
     <meta
       property="fc:frame:image"
-      content="${profileList}"
+      content="${profile_url}"
     />
     <meta property="fc:frame:button:1" content="Find Next Fren :)" />
     <meta
