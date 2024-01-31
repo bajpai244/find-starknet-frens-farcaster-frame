@@ -42,9 +42,12 @@ app.get('/next_profile', (req, res) => {
 });
 
 if (process.env.PROD == "true") {
+
+    const certDir = "/etc/letsencrypt/live/kakachain.xyz";
+
     // Read the certificate and private key
-    const privateKey = fs.readFileSync(path.join("/etc/letsencrypt/live/www.kakachain.xyz", 'privkey.pem'), 'utf8');
-    const certificate = fs.readFileSync(path.join("/etc/letsencrypt/live/www.kakachain.xyz", 'cert.pem'), 'utf8');
+    const privateKey = fs.readFileSync(path.join(certDir, 'privkey.pem'), 'utf8');
+    const certificate = fs.readFileSync(path.join(certDir, 'cert.pem'), 'utf8');
 
     const credentials = { key: privateKey, cert: certificate };
 
